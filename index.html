@@ -4,12 +4,31 @@
         <script>
             window.setTimeout(function() {
                 window.location.href = "https://share.collx.app/TheJokersWildcards";
-            }, 3000);
+            }, 2000);
         </script>
+        <style>
+            body {
+                background-color: #090909;
+            }
+            
+            #page-container {
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;     /* Centers vertically */
+            height: 100vh;           /* Forces container to take full screen height */
+            }
+
+            #joker-card {
+                height: auto;
+                width: 300px;
+            }
+        </style>
     </head>
     <body>
-        <a href="https://share.collx.app/TheJokersWildcards">
-            <img src="Joker.png">
-        </a>
+        <div id="page-container">
+            <a id="joker-link" href="https://share.collx.app/TheJokersWildcards">
+                <img id="joker-card" src="Joker.png">
+            </a>
+        </div>
     </body>
 </html>
