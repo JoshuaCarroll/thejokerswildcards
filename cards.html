@@ -132,6 +132,7 @@
             aspect-ratio: 5 / 7;
             object-fit: cover;
             background: #f2ead0;
+            cursor: zoom-in;
         }
 
         figcaption {
@@ -150,6 +151,82 @@
             padding: 8px;
             text-align: center;
         }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.82);
+            z-index: 999;
+            padding: 16px;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-dialog {
+            position: relative;
+            max-width: min(95vw, 1100px);
+            max-height: 92vh;
+            width: fit-content;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: #231400;
+            background: var(--accent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-close:hover {
+            background: var(--accent-deep);
+            color: #fff8ea;
+        }
+
+        .modal-image-wrap {
+            padding: 42px 10px 10px;
+        }
+
+        #modal-image {
+            display: block;
+            max-width: min(92vw, 1080px);
+            max-height: calc(92vh - 95px);
+            width: auto;
+            height: auto;
+            margin: 0 auto;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #0c0c0c;
+            cursor: pointer;
+        }
+
+        #modal-caption {
+            color: #f4edd7;
+            text-align: center;
+            font-size: 0.95rem;
+            padding: 8px 12px 14px;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -163,6 +240,16 @@
 
         <div id="status" class="status">Loading cards...</div>
         <section id="gallery" class="grid" aria-live="polite"></section>
+    </div>
+
+    <div id="image-modal" class="modal" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-caption">
+            <button id="modal-close" class="modal-close" type="button" aria-label="Close full-size image">&times;</button>
+            <div class="modal-image-wrap">
+                <img id="modal-image" src="" alt="">
+            </div>
+            <div id="modal-caption"></div>
+        </div>
     </div>
 
     <script>

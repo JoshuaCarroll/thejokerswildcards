@@ -4,6 +4,11 @@
     const statusEl = document.getElementById("status");
     const galleryEl = document.getElementById("gallery");
     const reloadBtn = document.getElementById("reload-btn");
+    const modalEl = document.getElementById("image-modal");
+    const modalImageEl = document.getElementById("modal-image");
+    const modalCaptionEl = document.getElementById("modal-caption");
+    const modalCloseBtn = document.getElementById("modal-close");
+    let modalCardState = null;
 
     const config = getConfig();
 
@@ -151,8 +156,8 @@
             const thumbs = document.createElement("div");
             thumbs.className = "thumbs";
 
-            thumbs.appendChild(createThumb(entry.front, "Front"));
-            thumbs.appendChild(createThumb(entry.back, "Back"));
+            thumbs.appendChild(createThumb(entry.front, "Front", entry.key));
+            thumbs.appendChild(createThumb(entry.back, "Back", entry.key));
 
             card.appendChild(header);
             card.appendChild(thumbs);
@@ -162,14 +167,19 @@
         galleryEl.appendChild(fragment);
     }
 
-    function createThumb(url, caption) {
+    function createThumb(url, caption, cardName) {
         const figure = document.createElement("figure");
+        const side = caption.toLowerCase();
 
         if (url) {
             const img = document.createElement("img");
             img.src = url;
-            img.alt = `${caption} image`;
+            img.alt = `${cardName} ${caption}`;
             img.loading = "lazy";
+            img.dataset.fullsizeUrl = url;
+            img.dataset.modalCaption = `${cardName} - ${caption}`;
+            img.dataset.cardName = cardName;
+            img.dataset.side = side;
 
             figure.appendChild(img);
         } else {
@@ -185,6 +195,120 @@
 
         return figure;
     }
+
+    function openModal(imageUrl, caption) {
+        if (!modalEl || !modalImageEl || !modalCaptionEl) {
+            return;
+        }
+
+        modalImageEl.src = imageUrl;
+        modalImageEl.alt = caption;
+        modalCaptionEl.textContent = caption;
+        modalEl.classList.add("open");
+        modalEl.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+    }
+
+    function openModalFromThumb(thumbImage) {
+        const side = thumbImage.dataset.side === "back" ? "back" : "front";
+        const cardName = thumbImage.dataset.cardName || "Card";
+
+        const siblingImages = thumbImage.closest(".thumbs")?.querySelectorAll("img") || [];
+        let frontUrl = null;
+        let backUrl = null;
+
+        siblingImages.forEach((img) => {
+            const siblingSide = img.dataset.side;
+            if (siblingSide === "front") {
+                frontUrl = img.dataset.fullsizeUrl || null;
+            }
+            if (siblingSide === "back") {
+                backUrl = img.dataset.fullsizeUrl || null;
+            }
+        });
+
+        modalCardState = {
+            cardName,
+            frontUrl,
+            backUrl,
+            currentSide: side
+        };
+
+        const urlToOpen = side === "back" ? backUrl : frontUrl;
+        const caption = `${cardName} - ${side === "back" ? "Back" : "Front"}`;
+        if (urlToOpen) {
+            openModal(urlToOpen, caption);
+        }
+    }
+
+    function flipModalCardSide() {
+        if (!modalCardState || !modalImageEl || !modalCaptionEl) {
+            return;
+        }
+
+        const oppositeSide = modalCardState.currentSide === "front" ? "back" : "front";
+        const oppositeUrl = oppositeSide === "front" ? modalCardState.frontUrl : modalCardState.backUrl;
+        if (!oppositeUrl) {
+            return;
+        }
+
+        modalCardState.currentSide = oppositeSide;
+        modalImageEl.src = oppositeUrl;
+        modalImageEl.alt = `${modalCardState.cardName} - ${oppositeSide === "front" ? "Front" : "Back"}`;
+        modalCaptionEl.textContent = `${modalCardState.cardName} - ${oppositeSide === "front" ? "Front" : "Back"}`;
+    }
+
+    function closeModal() {
+        if (!modalEl || !modalImageEl || !modalCaptionEl) {
+            return;
+        }
+
+        modalEl.classList.remove("open");
+        modalEl.setAttribute("aria-hidden", "true");
+        modalImageEl.src = "";
+        modalImageEl.alt = "";
+        modalCaptionEl.textContent = "";
+        modalCardState = null;
+        document.body.classList.remove("modal-open");
+    }
+
+    galleryEl.addEventListener("click", function (event) {
+        const target = event.target;
+        if (!(target instanceof HTMLImageElement)) {
+            return;
+        }
+
+        const fullsizeUrl = target.dataset.fullsizeUrl;
+        if (!fullsizeUrl) {
+            return;
+        }
+
+        openModalFromThumb(target);
+    });
+
+    if (modalImageEl) {
+        modalImageEl.addEventListener("click", function () {
+            flipModalCardSide();
+        });
+    }
+
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener("click", closeModal);
+    }
+
+    if (modalEl) {
+        modalEl.addEventListener("click", function (event) {
+            if (event.target === modalEl) {
+                closeModal();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modalEl && modalEl.classList.contains("open")) {
+            closeModal();
+        }
+    });
 
     reloadBtn.addEventListener("click", loadCards);
     loadCards();
