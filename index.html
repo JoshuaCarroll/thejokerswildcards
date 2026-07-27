@@ -2,36 +2,83 @@
     <head>
         <title>The Joker's Wildcards</title>
         <script>
-            window.setTimeout(function() {
-                window.location.href = "https://share.collx.app/TheJokersWildcards";
-            }, 2000);
+            //window.setTimeout(function() {
+            //    window.location.href = "https://share.collx.app/TheJokersWildcards?sort=NEWEST_FIRST";
+            //}, 2000);
         </script>
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fleur+De+Leah&family=Henny+Penny&display=swap');
+
             body {
-                background-color: #090909;
                 color: #fff;
+                background: url('joker-bg.png') no-repeat center center fixed; 
+                background-size: cover; 
+                min-height: 100vh; 
+                margin: 0; 
             }
             
-            #page-container {
+            .page-title {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100vh;
+                width: 100hw;
             }
 
-            #joker-card {
-                height: auto;
-                width: 300px;
+            h1 {
+                font-family: "Henny Penny", system-ui;
+                font-weight: bold;
+                text-shadow: 2px 2px 8px #000000;
+                font-size: 3.5em;
+            }
+
+            h1 span {
+                font-family: "Fleur De Leah", cursive;
+                font-size: 1.4em;
+            }
+
+            .page-content {
+                font-size: 1.3em;
+                line-height: 1.2em;
+                width: 65vw;
+                justify-content: left;
+                align-items: left;
+                margin-left: 2vw;
+            }
+
+            .link-button {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                margin-top: 10vh;
+            }
+
+            .nav-links {
+                margin: 12px 0 0 2vw;
+            }
+
+            .nav-links a {
+                color: #ffd44d;
+                font-size: 1.05em;
+                text-shadow: 2px 2px 8px #000000;
             }
         </style>
     </head>
     <body>
         <div id="page-container">
-            <div>
-                <h1>Loading...</h1>
-                <a id="joker-link" href="https://share.collx.app/TheJokersWildcards">
-                    <img id="joker-card" src="Joker.png">
-                </a>
+            <div class="page-title">
+                <h1>The <span>Joker's</span> Wildcards</h1>
+            </div>
+            <div class="page-content">
+                <div class="link-button">                        
+                    <a href="https://share.collx.app/TheJokersWildcards?sort=NEWEST_FIRST">
+                        <img src="cards-for-sale.png" width="400" alt="Cards for sale">
+                    </a>
+                </div>
+                <div class="link-button">                        
+                    <a href="cards.html">
+                        <img src="personal-collection.png" width="400" alt="Browse my personal collection">
+                    </a>
+                </div>
             </div>
         </div>
     </body>

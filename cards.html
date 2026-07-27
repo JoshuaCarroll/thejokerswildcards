@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Card Gallery | The Joker's Wildcards</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Henny+Penny&family=Special+Elite&display=swap');
+
+        :root {
+            --bg: #132227;
+            --bg-soft: #1f343a;
+            --card: #f6f0dc;
+            --ink: #1c1a16;
+            --accent: #ffb703;
+            --accent-deep: #d48300;
+            --shadow: rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #fff;
+            font-family: "Special Elite", serif;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255, 183, 3, 0.18), transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.1), transparent 25%),
+                linear-gradient(155deg, var(--bg), var(--bg-soft));
+            padding: 24px;
+        }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: "Henny Penny", system-ui;
+            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            text-shadow: 2px 2px 6px var(--shadow);
+        }
+
+        .subhead {
+            margin: 8px 0 22px;
+            opacity: 0.92;
+            line-height: 1.4;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #1e1300;
+            font: inherit;
+            font-size: 0.95rem;
+            padding: 10px 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.15s ease, background 0.15s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            background: var(--accent-deep);
+            color: #fff8ea;
+        }
+
+        .status {
+            margin: 12px 0 18px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 70ch;
+        }
+
+        .status.error {
+            background: rgba(160, 33, 33, 0.35);
+            border-color: rgba(255, 126, 126, 0.8);
+        }
+
+        .grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            color: var(--ink);
+            border-radius: 14px;
+            box-shadow: 0 8px 18px var(--shadow);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(8px);
+            animation: reveal 0.35s ease forwards;
+        }
+
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            padding: 10px 12px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.25);
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .thumbs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 10px;
+        }
+
+        figure {
+            margin: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f2ead0;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 5 / 7;
+            object-fit: cover;
+            background: #f2ead0;
+        }
+
+        figcaption {
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 6px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .missing {
+            display: grid;
+            place-items: center;
+            aspect-ratio: 5 / 7;
+            font-size: 0.8rem;
+            color: #6a5a44;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <h1>Baseball Card Gallery</h1>
+        <p class="subhead">This page auto-loads all images in your cards folder using GitHub APIs and matches files named <strong>{unique-id}-front.ext</strong> and <strong>{unique-id}-back.ext</strong>.</p>
+
+        <div class="controls">
+            <a class="btn" href="index.html">Back Home</a>
+            <button class="btn" id="reload-btn" type="button">Reload Cards</button>
+        </div>
+
+        <div id="status" class="status">Loading cards...</div>
+        <section id="gallery" class="grid" aria-live="polite"></section>
+    </div>
+
+    <script>
+        window.CARDS_GALLERY_CONFIG = {
+            owner: "joshuacarroll",
+            repo: "thejokerswildcards",
+            branch: "main",
+            imagesPath: "cards"
+        };
+    </script>
+    <script src="cards-gallery.js"></script>
+</body>
+</html>
