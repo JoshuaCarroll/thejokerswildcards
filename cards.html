@@ -30,25 +30,12 @@
                 radial-gradient(circle at 10% 20%, rgba(255, 183, 3, 0.18), transparent 40%),
                 radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.1), transparent 25%),
                 linear-gradient(155deg, var(--bg), var(--bg-soft));
-            padding: 24px;
+            padding: 5px;
         }
 
         .page-shell {
-            max-width: 1200px;
+            max-width: 90vw;
             margin: 0 auto;
-        }
-
-        h1 {
-            margin: 0;
-            font-family: "Henny Penny", system-ui;
-            font-size: clamp(2.1rem, 4vw, 3.4rem);
-            text-shadow: 2px 2px 6px var(--shadow);
-        }
-
-        .subhead {
-            margin: 8px 0 22px;
-            opacity: 0.92;
-            line-height: 1.4;
         }
 
         .controls {
@@ -139,7 +126,7 @@
             border: 1px solid rgba(0, 0, 0, 0.12);
         }
 
-        img {
+        #gallery img {
             display: block;
             width: 100%;
             aspect-ratio: 5 / 7;
@@ -167,8 +154,7 @@
 </head>
 <body>
     <div class="page-shell">
-        <h1>Baseball Card Gallery</h1>
-        <p class="subhead">This page auto-loads all images in your cards folder using GitHub APIs and matches files named <strong>{unique-id}-front.ext</strong> and <strong>{unique-id}-back.ext</strong>.</p>
+        <h1><img src="pc-header.png" width="" alt="Cartoon style image that shows a nerd dressed as a jester holding a graded baseball card. Text reads: The Joker's Personal Collection"></h1>
 
         <div class="controls">
             <a class="btn" href="index.html">Back Home</a>
