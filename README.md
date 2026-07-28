@@ -1,30 +1,25 @@
 # thejokerswildcards
 
-## Baseball Card Thumbnail Gallery
+## Collection Browser
 
-A new page is available at `cards.html` that loads baseball card thumbnails from a single folder in this repo.
+`cards.html` now reads directly from `cards.csv` at the repo root instead of scanning a folder for image pairs.
 
-### Folder and file naming
+### CSV fields used by the page
 
-1. Put card images in a folder named `cards` at the repo root.
-2. Name files like:
-	- `griffey-1989-upper-deck-front.jpg`
-	- `griffey-1989-upper-deck-back.jpg`
-3. The page pairs files by the shared prefix before `-front` / `-back`.
+The browser expects these columns in `cards.csv`:
 
-### How loading works
+`title`, `year`, `brand`, `set`, `subset`, `player`, `team`, `card_number`, `grade_name`, `grade_number`, `sale_price`, `market_price`, `note`, `front_image`, `back_image`
 
-- The page uses client-side JavaScript and the public GitHub Contents API.
-- No backend is required.
-- On GitHub Pages, it will render all matching pairs automatically.
+Only `title`, `front_image`, and `back_image` are required. The rest are used to enrich the card tiles, search, sort, and summary counts when present.
 
-### Config
+### How it works
 
-The configuration is in `cards.html` under `window.CARDS_GALLERY_CONFIG`:
+- The page fetches `cards.csv` on load and again when you click Refresh CSV.
+- Front and back images are hot-loaded directly from the cloud URLs in the CSV.
+- Search and sort are client-side, so updating the CSV is enough to refresh the collection view.
 
-- `owner`
-- `repo`
-- `branch`
-- `imagesPath`
+### Updating the collection
 
-Update these values if your repo name, branch, or image folder changes.
+1. Add or edit rows in `cards.csv`.
+2. Make sure `front_image` and `back_image` contain publicly accessible image URLs.
+3. Reload `cards.html` or use the Refresh CSV button.
