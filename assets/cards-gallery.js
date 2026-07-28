@@ -1,6 +1,9 @@
 (function () {
     "use strict";
 
+    // "../cards.csv"
+    const csvPath = "https://v2.carddealerpro.com/v2/users/47648/batches/1235969/download?csv_only=1";
+
     const statusEl = document.getElementById("status");
     const galleryEl = document.getElementById("gallery");
     const emptyStateEl = document.getElementById("empty-state");
@@ -523,11 +526,12 @@
             return;
         }
 
-        setStatus("Loading cards from cards.csv...", false);
+        setStatus("Loading cards from csv...", false);
         galleryEl.innerHTML = "";
 
         try {
-            const csvUrl = bustCache ? `../cards.csv?ts=${Date.now()}` : "../cards.csv";
+            const variableSeparator = csvPath.contains("?") ? "&" : "?";
+            const csvUrl = bustCache ? `${csvPath}${variableSeparator}ts=${Date.now()}` : csvPath;
             const response = await fetch(csvUrl, { cache: "no-store" });
 
             if (!response.ok) {
@@ -541,7 +545,7 @@
                 state.cards = [];
                 state.filteredCards = [];
                 updateStats([]);
-                setStatus("cards.csv loaded, but no rows contained card data.", true);
+                setStatus("csv loaded, but no rows contained card data.", true);
                 if (emptyStateEl) {
                     emptyStateEl.hidden = false;
                 }
