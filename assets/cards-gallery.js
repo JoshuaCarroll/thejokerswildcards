@@ -531,7 +531,7 @@
         galleryEl.innerHTML = "";
 
         try {
-            const variableSeparator = csvPath.contains("?") ? "&" : "?";
+            const variableSeparator = csvPath.includes("?") ? "&" : "?";
             const csvUrl = bustCache ? `${csvPath}${variableSeparator}ts=${Date.now()}` : csvPath;
             console.debug(`csvUrl = ${csvUrl}`);
             const response = await fetch(csvUrl, { cache: "no-store" });
