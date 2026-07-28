@@ -532,6 +532,7 @@
         try {
             const variableSeparator = csvPath.contains("?") ? "&" : "?";
             const csvUrl = bustCache ? `${csvPath}${variableSeparator}ts=${Date.now()}` : csvPath;
+            console.debug(`csvUrl = ${csvUrl}`);
             const response = await fetch(csvUrl, { cache: "no-store" });
 
             if (!response.ok) {
