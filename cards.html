@@ -569,10 +569,6 @@
                 min-height: 52vh;
             }
         }
-
-        .stats {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -585,7 +581,7 @@
         </header>
 
         <section class="dashboard" aria-label="Collection controls and summary">
-            <div class="panel">
+            <div class="panel" style="display: none;">
                 <div class="stats">
                     <article class="stat"><span class="stat-value" id="stat-total">0</span><span class="stat-label">Cards</span></article>
                     <article class="stat"><span class="stat-value" id="stat-years">0</span><span class="stat-label">Years</span></article>
@@ -619,7 +615,7 @@
             </div>
         </section>
 
-        <div id="status" class="status">Loading cards from cards.csv...</div>
+        <div id="status" class="status" style="display: none;">Loading cards from cards.csv...</div>
         <main id="gallery" class="collection-grid" aria-live="polite"></main>
         <div id="empty-state" class="empty-state" hidden>No cards match the current filters.</div>
     </div>
