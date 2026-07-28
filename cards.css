@@ -343,25 +343,11 @@
       position: relative;
    }
 
-   .image-frame::after {
-      content: attr(data-side);
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      color: #fff7e8;
-      background: rgba(17, 17, 17, 0.78);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-   }
-
    .image-frame img {
       display: block;
       width: 100%;
       aspect-ratio: 5 / 7;
-      object-fit: cover;
+      object-fit: contain;
       background: var(--card-surface);
    }
 

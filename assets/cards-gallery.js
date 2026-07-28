@@ -313,7 +313,7 @@
 
         const img = document.createElement("img");
         img.src = imageUrl;
-        img.alt = `${card.title} ${side === "front" ? "front" : "back"}`;
+        img.alt = `${card.title}`;
         img.loading = "lazy";
         img.decoding = "async";
         img.referrerPolicy = "no-referrer";
