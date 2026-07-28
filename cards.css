@@ -341,8 +341,11 @@
       background: transparent;
       text-align: left;
       cursor: zoom-in;
-      width: 318px; 
-      height: 318px;
+      width: 100%;
+      max-width: 318px;
+      min-height: 318px;
+      display: flex;
+      align-items: stretch;
    }
 
    .image-frame,
@@ -354,15 +357,20 @@
       color: var(--card-ink);
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      width: 100%;
+      min-height: 318px;
    }
 
    .image-frame {
       position: relative;
+      align-items: center;
+      justify-items: center;
    }
 
    .image-frame img {
       display: block;
       width: 100%;
+      height: 100%;
       max-height: 316px;
       object-fit: contain;
       background: var(--card-surface);
