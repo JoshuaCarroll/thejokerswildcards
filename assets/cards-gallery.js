@@ -362,6 +362,7 @@
             imageGrid.appendChild(createImageButton(card, "front"));
             imageGrid.appendChild(createImageButton(card, "back"));
 
+            /*
             const footer = document.createElement("div");
             footer.className = "card-footer";
 
@@ -376,11 +377,12 @@
             if (price.textContent) {
                 footer.appendChild(price);
             }
+            */
 
             article.appendChild(header);
             article.appendChild(chips);
             article.appendChild(imageGrid);
-            article.appendChild(footer);
+            // article.appendChild(footer);
             fragment.appendChild(article);
         });
 
@@ -549,7 +551,7 @@
 
             state.cards = cards;
             applyFilters();
-            setStatus(`Loaded ${cards.length} card${cards.length === 1 ? "" : "s"} from cards.csv.`, false);
+            setStatus(``, false);
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             state.cards = [];
