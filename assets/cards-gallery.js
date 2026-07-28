@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    // "../cards.csv"
+    // const csvPath = "../cards.csv";
     const csvPath = "https://v2.carddealerpro.com/v2/users/47648/batches/1235969/download?csv_only=1";
 
     const statusEl = document.getElementById("status");
@@ -362,7 +362,7 @@
             });
 
             const imageGrid = document.createElement("div");
-            imageGrid.className = "image-grid";
+            // imageGrid.className = "image-grid";
             imageGrid.appendChild(createImageButton(card, "front"));
 
             /*

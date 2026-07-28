@@ -346,7 +346,6 @@
    .image-frame img {
       display: block;
       width: 100%;
-      aspect-ratio: 5 / 7;
       object-fit: contain;
       background: var(--card-surface);
    }
