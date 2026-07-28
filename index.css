@@ -1,0 +1,95 @@
+         @import url('https://fonts.googleapis.com/css2?family=Fleur+De+Leah&family=Henny+Penny&display=swap');
+
+            body {
+                color: #fff;
+                background-image: url('assets/joker-bg.png');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position-y: bottom;
+                background-position-x: right;
+                background-size: cover; 
+                min-height: 100vh; 
+                margin: 0; 
+            }
+            
+            .page-title {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100hw;
+            }
+
+            h1 {
+                font-family: "Henny Penny", system-ui;
+                font-weight: bold;
+                text-shadow: 2px 2px 8px #000000;
+                font-size: clamp(1.8rem, 4vw + 1rem, 4.5rem);
+                margin-bottom: 6vh;
+            }
+
+            h1 span {
+                font-family: "Fleur De Leah", cursive;
+                font-size: 1.4em;
+            }
+
+            .page-content {
+                font-size: 1.3em;
+                line-height: 1.2em;
+                width: 65vw;
+                justify-content: left;
+                align-items: left;
+                margin-left: 2vw;
+            }
+
+            .link-button {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                margin-bottom: 6vh;
+            }
+
+            .link-button img {
+                width: clamp(20rem, 30vw + 1rem, 530px);
+                align-self: center;
+            }
+
+            .nav-links {
+                margin: 12px 0 0 2vw;
+            }
+
+            .nav-links a {
+                color: #ffd44d;
+                font-size: 1.05em;
+                text-shadow: 2px 2px 8px #000000;
+            }
+
+            @media (max-width: 760px) {
+                body {
+                    background-position-x: 65%;
+                    text-align: center;
+                }
+            }
+
+            @media (max-width: 480px) {
+                body {
+                    background-position-x: 65%;
+                    text-align: center;
+                }
+
+                .page-content {
+                    width: 100vw;
+                    align-items: center;
+                    margin-left: 0;
+                }
+                
+                .link-button {
+                    text-align: center;
+                    margin-bottom: 2vh;
+                }
+
+                .link-button img {
+                    width: 85vw;
+                    height: auto;
+                    align-self: center;                    
+                }
+            }

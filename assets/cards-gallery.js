@@ -360,7 +360,6 @@
             const imageGrid = document.createElement("div");
             imageGrid.className = "image-grid";
             imageGrid.appendChild(createImageButton(card, "front"));
-            imageGrid.appendChild(createImageButton(card, "back"));
 
             /*
             const footer = document.createElement("div");
