@@ -40,6 +40,7 @@
             return;
         }
 
+        console.debug(message);
         statusEl.textContent = message;
         statusEl.classList.toggle("error", !!isError);
     }
