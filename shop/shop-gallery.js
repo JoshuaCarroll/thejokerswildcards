@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const sourcesPath = "shop-sources.json";
+    const inventoryPath = "inventory.csv";
     const statusEl = document.getElementById("status");
     const galleryEl = document.getElementById("gallery");
     const emptyStateEl = document.getElementById("empty-state");
@@ -150,59 +150,69 @@
 
         return dataRows
             .map((row, index) => {
-                const title = getField(row, lookup, "title");
-                const player = getField(row, lookup, "player");
+                const name = getField(row, lookup, "name");
+                const number = getField(row, lookup, "number");
                 const year = getField(row, lookup, "year");
                 const brand = getField(row, lookup, "brand");
                 const setName = getField(row, lookup, "set");
-                const subset = getField(row, lookup, "subset");
                 const team = getField(row, lookup, "team");
-                const cardNumber = getField(row, lookup, "card_number");
-                const gradeName = getField(row, lookup, "grade_name");
-                const gradeNumber = getField(row, lookup, "grade_number");
-                const salePrice = toNumber(getField(row, lookup, "sale_price"));
-                const marketPrice = toNumber(getField(row, lookup, "market_price"));
-                const note = getField(row, lookup, "note");
+                const category = getField(row, lookup, "category");
+                const condition = getField(row, lookup, "condition");
+                const flags = getField(row, lookup, "flags");
+                const location = getField(row, lookup, "location");
+                const notes = getField(row, lookup, "notes");
+                const quantity = getField(row, lookup, "quantity");
+                const askingPrice = toNumber(getField(row, lookup, "asking_price"));
+                const marketPrice = toNumber(getField(row, lookup, "market_value"));
+                const purchasePrice = toNumber(getField(row, lookup, "purchase_price"));
                 const frontImage = getField(row, lookup, "front_image");
                 const backImage = getField(row, lookup, "back_image");
+                const collxId = getField(row, lookup, "collx_id");
 
-                const resolvedTitle = title || [player, setName, cardNumber].filter(Boolean).join(" ") || `Card ${index + 1}`;
+                const resolvedTitle = [name, number ? `#${number}` : ""].filter(Boolean).join(" ") || `Card ${index + 1}`;
+                const salePrice = askingPrice ?? marketPrice ?? purchasePrice;
 
                 return {
-                    id: `${resolvedTitle}-${index}`,
+                    id: collxId || `${resolvedTitle}-${index}`,
                     title: resolvedTitle,
-                    player,
+                    player: name,
                     year,
                     brand,
                     setName,
-                    subset,
                     team,
-                    cardNumber,
-                    gradeName,
-                    gradeNumber,
+                    cardNumber: number,
+                    condition,
+                    category,
+                    flags,
+                    location,
+                    note: notes,
                     salePrice,
                     marketPrice,
-                    note,
+                    purchasePrice,
                     frontImage,
                     backImage,
+                    collxId,
+                    collxUrl: collxId ? `https://share.collx.app/${encodeURIComponent(collxId)}` : "",
                     searchText: [
                         resolvedTitle,
-                        player,
+                        name,
+                        number,
                         year,
                         brand,
                         setName,
-                        subset,
                         team,
-                        cardNumber,
-                        gradeName,
-                        gradeNumber,
-                        note
+                        category,
+                        condition,
+                        flags,
+                        location,
+                        notes
                     ].filter(Boolean).join(" ").toLowerCase(),
                     sortTitle: resolvedTitle.toLowerCase(),
-                    sortPlayer: player.toLowerCase(),
+                    sortPlayer: name.toLowerCase(),
                     sortBrand: brand.toLowerCase(),
                     sortYear: Number.parseInt(year, 10) || 0,
-                    imageCount: Number(Boolean(frontImage)) + Number(Boolean(backImage))
+                    imageCount: Number(Boolean(frontImage)) + Number(Boolean(backImage)),
+                    quantity
                 };
             })
             .filter((card) => card.title || card.frontImage || card.backImage);
@@ -306,7 +316,7 @@
 
             const meta = document.createElement("p");
             meta.className = "card-meta";
-            meta.textContent = [card.player, card.brand, card.setName, card.cardNumber].filter(Boolean).join(" • ");
+            meta.textContent = [card.player, card.brand, card.setName, card.cardNumber, card.condition].filter(Boolean).join(" • ");
 
             const price = document.createElement("p");
             price.className = "card-price";
@@ -326,6 +336,17 @@
             viewButton.addEventListener("click", () => openModal(card));
 
             actions.appendChild(viewButton);
+
+            if (card.collxUrl) {
+                const collxButton = document.createElement("button");
+                collxButton.className = "card-action";
+                collxButton.type = "button";
+                collxButton.textContent = "Open in CollX";
+                collxButton.addEventListener("click", () => {
+                    window.open(card.collxUrl, "_blank", "noopener,noreferrer");
+                });
+                actions.appendChild(collxButton);
+            }
             body.appendChild(title);
             body.appendChild(meta);
             body.appendChild(price);
@@ -386,38 +407,25 @@
         modalEl.setAttribute("aria-hidden", "true");
     }
 
-    async function loadSources() {
+    async function loadInventory() {
         setStatus("Loading shop inventory…");
 
         try {
-            const response = await fetch(sourcesPath, { cache: "no-store" });
+            const response = await fetch(inventoryPath, { cache: "no-store" });
             if (!response.ok) {
-                throw new Error(`Unable to load source list (${response.status})`);
+                throw new Error(`Unable to load inventory export (${response.status})`);
             }
 
-            const manifest = await response.json();
-            const sourceUrls = Array.isArray(manifest.sources) ? manifest.sources : [];
+            const csvText = await response.text();
+            const loadedCards = normalizeCards(csvText);
+
             if (sourceCountEl) {
-                sourceCountEl.textContent = `${sourceUrls.length} batch${sourceUrls.length === 1 ? "" : "es"} loaded from the manifest`;
+                sourceCountEl.textContent = `Loaded from the latest CollX inventory export`;
             }
 
-            if (sourceUrls.length === 0) {
-                setStatus("No card sources were found in the manifest.", true);
-                return;
-            }
-
-            const csvTexts = await Promise.all(sourceUrls.map(async (sourceUrl) => {
-                const csvResponse = await fetch(sourceUrl, { cache: "no-store" });
-                if (!csvResponse.ok) {
-                    throw new Error(`Unable to load ${sourceUrl}`);
-                }
-                return csvResponse.text();
-            }));
-
-            const loadedCards = csvTexts.flatMap((text) => normalizeCards(text));
             state.cards = loadedCards;
             renderCards();
-            setStatus(`Loaded ${loadedCards.length} cards across ${sourceUrls.length} source${sourceUrls.length === 1 ? "" : "s"}.`);
+            setStatus(`Loaded ${loadedCards.length} cards from the inventory export.`);
         } catch (error) {
             console.error(error);
             setStatus(`Unable to load shop inventory: ${error.message}`, true);
@@ -447,5 +455,5 @@
     }
 
     bindEvents();
-    loadSources();
+    loadInventory();
 })();
