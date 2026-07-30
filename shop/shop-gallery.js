@@ -8,13 +8,13 @@
     const searchInputEl = document.getElementById("search-input");
     const sortSelectEl = document.getElementById("sort-select");
     const clearSearchBtn = document.getElementById("clear-search");
-    const sourceCountEl = document.getElementById("source-count");
     const modalEl = document.getElementById("image-modal");
     const modalImageEl = document.getElementById("modal-image");
     const modalTitleEl = document.getElementById("modal-title");
     const modalCaptionEl = document.getElementById("modal-caption");
     const modalCloseBtn = document.getElementById("modal-close");
     const modalControlsEl = document.getElementById("modal-controls");
+    const cardCountEl = document.getElementById("card-count");
 
     const currencyFormatter = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -30,13 +30,19 @@
     };
 
     function setStatus(message, isError) {
+        if (isError) {
+            console.error(message);
+        }
+        else {
+            console.debug(message);
+        }
+
         if (!statusEl) {
             return;
         }
 
         statusEl.textContent = message;
         statusEl.classList.toggle("error", !!isError);
-        statusEl.style.display = "block";
     }
 
     function clean(value) {
@@ -419,12 +425,9 @@
             const csvText = await response.text();
             const loadedCards = normalizeCards(csvText);
 
-            if (sourceCountEl) {
-                sourceCountEl.textContent = `Loaded from the latest CollX inventory export`;
-            }
-
             state.cards = loadedCards;
             renderCards();
+            cardCountEl.textContent = loadedCards.length;
             setStatus(`Loaded ${loadedCards.length} cards from the inventory export.`);
         } catch (error) {
             console.error(error);
