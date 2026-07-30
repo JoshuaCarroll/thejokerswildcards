@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Inventory | The Joker's Wildcards</title>
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-back-link"><a class="action action-primary" href="/">Back Home</a></div>
+            <div class="hero-content">
+                <img class="hero-banner" src="../assets/shop-inventory.svg" alt="Illustrated shop banner for The Joker's Wildcards inventory">
+                <div class="hero-copy-block">
+                    <p class="eyebrow">Cards for sale</p>
+                    <h1>Browse the current shop inventory</h1>
+                    <p>Search across every uploaded batch and explore cards that are currently available for purchase.</p>
+                    <div class="hero-meta" id="source-count">Loading sources…</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard">
+            <div class="panel">
+                <div class="toolbar">
+                    <div class="field">
+                        <label for="search-input">Search</label>
+                        <input id="search-input" type="search" placeholder="Title, player, set, team, year, grade...">
+                    </div>
+
+                    <div class="field">
+                        <label for="sort-select">Sort</label>
+                        <select id="sort-select">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                            <option value="title">Title A-Z</option>
+                            <option value="player">Player A-Z</option>
+                            <option value="brand">Brand A-Z</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-actions">
+                        <button class="action action-secondary" id="clear-search" type="button">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="status" class="status" style="display: none;">Loading shop inventory…</div>
+        <main id="gallery" class="collection-grid" aria-live="polite"></main>
+        <div id="empty-state" class="empty-state" hidden>No cards match the current filters.</div>
+    </div>
+
+    <div id="image-modal" class="modal" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-head">
+                <div>
+                    <h2 id="modal-title" class="modal-title"></h2>
+                    <p id="modal-caption" class="modal-caption"></p>
+                </div>
+                <button id="modal-close" class="modal-close" type="button" aria-label="Close full-size image">&times;</button>
+            </div>
+
+            <div class="modal-stage">
+                <div class="modal-image-shell">
+                    <img id="modal-image" src="" alt="">
+                </div>
+                <div class="modal-controls" id="modal-controls"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="shop-gallery.js"></script>
+</body>
+</html>
