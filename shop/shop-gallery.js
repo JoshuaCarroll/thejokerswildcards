@@ -199,6 +199,7 @@
                     backImage,
                     collxId,
                     collxUrl: collxId ? `https://share.collx.app/${encodeURIComponent(collxId)}` : "",
+                    collxDeepLink: collxId ? `collx://user_cards/3345266/${encodeURIComponent(collxId)}` : "",
                     searchText: [
                         resolvedTitle,
                         name,
