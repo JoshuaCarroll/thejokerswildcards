@@ -357,7 +357,7 @@
                 const collxButton = document.createElement("button");
                 collxButton.className = "card-action";
                 collxButton.type = "button";
-                collxButton.textContent = "Open in";
+                collxButton.textContent = "Purchase in";
                 collxButton.appendChild(collxLogo);
                 collxButton.addEventListener("click", () => {
                     window.open(card.collxDeepLink, "_blank", "noopener,noreferrer");
