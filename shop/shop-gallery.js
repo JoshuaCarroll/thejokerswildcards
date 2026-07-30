@@ -353,6 +353,7 @@
                 const collxLogo = document.createElement("img");
                 collxLogo.src = "assets/collx.svg";
                 collxLogo.className = "collx-card-logo";
+                collxLogo.alt = "CollX";
 
                 const collxButton = document.createElement("button");
                 collxButton.className = "card-action";
