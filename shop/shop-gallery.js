@@ -349,7 +349,7 @@
 
             actions.appendChild(viewButton);
 
-            if (card.collxUrl) {
+            if (card.collxDeepLink) {
                 const collxLogo = document.createElement("img");
                 collxLogo.src = "assets/collx.svg";
                 collxLogo.className = "collx-card-logo";
@@ -360,7 +360,7 @@
                 collxButton.textContent = "Open in";
                 collxButton.appendChild(collxLogo);
                 collxButton.addEventListener("click", () => {
-                    window.open(card.collxUrl, "_blank", "noopener,noreferrer");
+                    window.open(card.collxDeepLink, "_blank", "noopener,noreferrer");
                 });
                 actions.appendChild(collxButton);
             }
