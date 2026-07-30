@@ -176,7 +176,7 @@
                 const collxId = getField(row, lookup, "collx_id");
 
                 const resolvedTitle = [name, number ? `#${number}` : ""].filter(Boolean).join(" ") || `Card ${index + 1}`;
-                const salePrice = askingPrice ?? marketPrice ?? purchasePrice;
+                const salePrice = askingPrice;
 
                 return {
                     id: collxId || `${resolvedTitle}-${index}`,
@@ -328,6 +328,11 @@
             price.className = "card-price";
             price.textContent = card.salePrice != null ? currencyFormatter.format(card.salePrice) : "Price on request";
 
+            const details = document.createElement("abbr");
+            details.title = "Check CollX for latest prices and availability";
+            details.textContent = " **";
+            price.appendChild(details);
+
             const note = document.createElement("p");
             note.className = "card-note";
             note.textContent = card.note ? card.note.replace(/<[^>]+>/g, " ").trim() : "";
@@ -344,10 +349,15 @@
             actions.appendChild(viewButton);
 
             if (card.collxUrl) {
+                const collxLogo = document.createElement(img);
+                collxLogo.src = "assets/collx.svg";
+                collxLogo.className = "collx-card-logo";
+
                 const collxButton = document.createElement("button");
                 collxButton.className = "card-action";
                 collxButton.type = "button";
-                collxButton.textContent = "Open in CollX";
+                collxButton.textContent = "Open in";
+                collxButton.appendChild(collxLogo);
                 collxButton.addEventListener("click", () => {
                     window.open(card.collxUrl, "_blank", "noopener,noreferrer");
                 });
