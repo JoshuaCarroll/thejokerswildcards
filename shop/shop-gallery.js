@@ -350,7 +350,7 @@
             actions.appendChild(viewButton);
 
             if (card.collxUrl) {
-                const collxLogo = document.createElement(img);
+                const collxLogo = document.createElement("img");
                 collxLogo.src = "assets/collx.svg";
                 collxLogo.className = "collx-card-logo";
 
