@@ -174,9 +174,11 @@
                 const frontImage = getField(row, lookup, "front_image");
                 const backImage = getField(row, lookup, "back_image");
                 const collxId = getField(row, lookup, "collx_id");
+                const added = getField(row, lookup, "added");
 
                 const resolvedTitle = [name, number ? `#${number}` : ""].filter(Boolean).join(" ") || `Card ${index + 1}`;
                 const salePrice = askingPrice;
+                const sortAdded = added ? Date.parse(added) : 0;
 
                 return {
                     id: collxId || `${resolvedTitle}-${index}`,
@@ -218,6 +220,7 @@
                     sortPlayer: name.toLowerCase(),
                     sortBrand: brand.toLowerCase(),
                     sortYear: Number.parseInt(year, 10) || 0,
+                    sortAdded: Number.isFinite(sortAdded) ? sortAdded : 0,
                     imageCount: Number(Boolean(frontImage)) + Number(Boolean(backImage)),
                     quantity
                 };
@@ -235,6 +238,12 @@
                 return [card.sortPlayer || card.sortTitle, card.sortTitle];
             case "brand":
                 return [card.sortBrand || card.sortTitle, card.sortTitle];
+            case "highest-price":
+                return [card.salePrice == null ? Number.MAX_SAFE_INTEGER : -card.salePrice, card.sortTitle];
+            case "lowest-price":
+                return [card.salePrice == null ? Number.MAX_SAFE_INTEGER : card.salePrice, card.sortTitle];
+            case "recently-added":
+                return [Number.isFinite(card.sortAdded) && card.sortAdded > 0 ? -card.sortAdded : Number.MAX_SAFE_INTEGER, card.sortTitle];
             case "newest":
             default:
                 return [card.sortYear ? -card.sortYear : Number.MAX_SAFE_INTEGER, card.sortTitle];
