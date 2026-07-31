@@ -35,6 +35,10 @@ body {
     height: 13.6px;
 }
 
+.page-header img {
+    width: clamp(300px, 90vw, 980px);
+}
+
 .page-shell {
     width: min(1400px, calc(100vw - 24px));
     margin: 0 auto;
@@ -78,10 +82,9 @@ body {
 }
 
 .hero-banner {
+    display: flex;
+    justify-content: center;
     width: 100%;
-    max-width: 420px;
-    display: block;
-    margin: 0 auto;
 }
 
 .hero-copy-block h1 {
