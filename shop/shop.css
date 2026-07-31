@@ -32,11 +32,14 @@ body {
 }
 
 .collx-card-logo {
-    height: 13.6px;
-}
-
-.page-header img {
-    width: clamp(300px, 90vw, 980px);
+    height: 1.2em;
+    aspect-ratio: 413/115;
+    background-image: url("assets/collx.svg");
+    background-size: cover;
+    display: inline-block;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+    vertical-align: sub;
 }
 
 .page-shell {
@@ -82,9 +85,29 @@ body {
 }
 
 .hero-banner {
-    display: flex;
+    margin-left: auto;
+    margin-right: auto;
     justify-content: center;
     width: 100%;
+    align-items: center;
+}
+
+.hero-banner-image {
+    text-align: center;
+}
+
+.hero-banner-image img,
+.hero-copy-block {
+    width: clamp(300px, 90vw, 980px);
+}
+
+.hero-copy-block {
+    margin-left: auto;
+    margin-right: auto;
+    
+    margin-top: 10px;
+    color: var(--muted);
+    line-height: 1.6;
 }
 
 .hero-copy-block h1 {
@@ -251,6 +274,7 @@ body {
     display: block;
     border-radius: 16px;
     max-height: 350px;
+    cursor: pointer;
 }
 
 .card-body {
@@ -294,6 +318,7 @@ body {
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .empty-state {

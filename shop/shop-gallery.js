@@ -312,6 +312,7 @@
             if (!card.frontImage && card.backImage) {
                 image.src = card.backImage;
             }
+            image.addEventListener("click", () => openModal(card));
             media.appendChild(image);
 
             const body = document.createElement("div");
@@ -328,12 +329,6 @@
             const price = document.createElement("span");
             price.className = "card-price";
             price.textContent = card.salePrice != null ? currencyFormatter.format(card.salePrice) : "Price on request";
-            price.textContent += " ";
-
-            const details = document.createElement("abbr");
-            details.title = "Check CollX for latest prices and availability";
-            details.textContent = "**";
-            price.appendChild(details);
 
             const note = document.createElement("span");
             note.className = "card-note";
@@ -351,15 +346,16 @@
             actions.appendChild(viewButton);
 
             if (card.collxDeepLink) {
-                const collxLogo = document.createElement("img");
-                collxLogo.src = "assets/collx.svg";
+                const collxLogo = document.createElement("a");
                 collxLogo.className = "collx-card-logo";
-                collxLogo.alt = "CollX";
+                collxLogo.ariaLabel = "CollX";
+                collxLogo.href = "https://collx.app";
+                collxLogo.target = "_blank";
 
                 const collxButton = document.createElement("button");
                 collxButton.className = "card-action";
                 collxButton.type = "button";
-                collxButton.textContent = "Purchase in";
+                collxButton.textContent = "Purchase in ";
                 collxButton.appendChild(collxLogo);
                 collxButton.addEventListener("click", () => {
                     window.open(card.collxDeepLink, "_blank", "noopener,noreferrer");
