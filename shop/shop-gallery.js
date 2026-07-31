@@ -321,20 +321,21 @@
             title.className = "card-title";
             title.textContent = card.title;
 
-            const meta = document.createElement("p");
+            const meta = document.createElement("span");
             meta.className = "card-meta";
             meta.textContent = [card.player, card.brand, card.setName, card.cardNumber, card.condition].filter(Boolean).join(" • ");
 
-            const price = document.createElement("p");
+            const price = document.createElement("span");
             price.className = "card-price";
             price.textContent = card.salePrice != null ? currencyFormatter.format(card.salePrice) : "Price on request";
+            price.textContent += " ";
 
             const details = document.createElement("abbr");
             details.title = "Check CollX for latest prices and availability";
-            details.textContent = " **";
+            details.textContent = "**";
             price.appendChild(details);
 
-            const note = document.createElement("p");
+            const note = document.createElement("span");
             note.className = "card-note";
             note.textContent = card.note ? card.note.replace(/<[^>]+>/g, " ").trim() : "";
 
