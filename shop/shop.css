@@ -236,7 +236,6 @@ body {
 }
 
 .card-media {
-    aspect-ratio: 3 / 4;
     background: linear-gradient(135deg, rgba(127, 47, 0, 0.06), rgba(200, 107, 26, 0.12));
     display: flex;
     align-items: center;
