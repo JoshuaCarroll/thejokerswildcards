@@ -355,19 +355,21 @@
             actions.appendChild(viewButton);
 
             if (card.collxDeepLink) {
-                const collxLogo = document.createElement("a");
-                collxLogo.className = "collx-card-logo";
-                collxLogo.ariaLabel = "CollX";
-
                 const collxButton = document.createElement("button");
                 collxButton.className = "card-action";
                 collxButton.type = "button";
                 collxButton.textContent = "Purchase in ";
+                
+                const collxLogo = document.createElement("span");
+                collxLogo.className = "collx-card-logo";
+                collxLogo.ariaLabel = "CollX";
                 collxButton.appendChild(collxLogo);
-                collxButton.addEventListener("click", () => {
-                    window.open(card.collxDeepLink);
-                });
-                actions.appendChild(collxButton);
+
+                const collxDeepLink = document.createElement("a");
+                collxDeepLink.href = card.collxDeepLink;
+                collxDeepLink.appendChild(collxButton);
+
+                actions.appendChild(collxDeepLink);
             }
             body.appendChild(title);
             body.appendChild(meta);
