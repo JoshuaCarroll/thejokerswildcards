@@ -365,7 +365,7 @@
                 collxButton.textContent = "Purchase in ";
                 collxButton.appendChild(collxLogo);
                 collxButton.addEventListener("click", () => {
-                    window.open(card.collxDeepLink, "_blank", "noopener,noreferrer");
+                    window.open(card.collxDeepLink);
                 });
                 actions.appendChild(collxButton);
             }
