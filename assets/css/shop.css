@@ -34,7 +34,7 @@ body {
 .collx-card-logo {
     height: 1.2em;
     aspect-ratio: 413/115;
-    background-image: url("assets/collx.svg");
+    background-image: url("../images/collx.svg");
     background-size: cover;
     display: inline-block;
     margin-left: 0.1em;

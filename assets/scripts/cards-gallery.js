@@ -289,6 +289,21 @@
         return chips.slice(0, 4);
     }
 
+    function getImageFallbackUrl() {
+        return "../assets/images/image-not-available.png";
+    }
+
+    function attachImageFallback(imageEl, fallbackUrl = getImageFallbackUrl()) {
+        imageEl.addEventListener("error", () => {
+            if (imageEl.getAttribute("data-has-fallback") === "true") {
+                return;
+            }
+            imageEl.setAttribute("data-has-fallback", "true");
+            imageEl.src = fallbackUrl;
+            imageEl.alt = `${imageEl.alt || "Card image"} (image unavailable)`;
+        });
+    }
+
     function createImageButton(card, side) {
         const imageUrl = side === "front" ? card.frontImage : card.backImage;
         const button = document.createElement("button");
@@ -312,11 +327,12 @@
         frame.dataset.side = side === "front" ? "Front" : "Back";
 
         const img = document.createElement("img");
-        img.src = imageUrl;
+        img.src = imageUrl || getImageFallbackUrl();
         img.alt = `${card.title}`;
         img.loading = "lazy";
         img.decoding = "async";
         img.referrerPolicy = "no-referrer";
+        attachImageFallback(img);
 
         frame.appendChild(img);
         button.appendChild(frame);
@@ -477,8 +493,9 @@
         state.modalCard = card;
         state.modalSide = side;
 
-        modalImageEl.src = imageUrl;
+        modalImageEl.src = imageUrl || getImageFallbackUrl();
         modalImageEl.alt = `${card.title} ${side}`;
+        attachImageFallback(modalImageEl);
         modalTitleEl.textContent = card.title;
         modalCaptionEl.textContent = [card.player, card.year, card.brand, side === "front" ? "Front" : "Back"].filter(Boolean).join(" · ");
         setModalControls(card, side);

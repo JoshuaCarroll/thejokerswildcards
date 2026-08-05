@@ -2,7 +2,7 @@
 
             body {
                 color: #fff;
-                background-image: url('assets/joker-bg.png');
+                background-image: url('../images/joker-bg.png');
                 background-repeat: no-repeat;
                 background-attachment: fixed;
                 background-position-y: bottom;

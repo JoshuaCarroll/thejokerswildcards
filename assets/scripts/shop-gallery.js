@@ -275,6 +275,21 @@
         return [...cards].sort((left, right) => compareArrays(getSortValue(left, sortMode), getSortValue(right, sortMode)));
     }
 
+    function getImageFallbackUrl() {
+        return "../assets/images/image-not-available.png";
+    }
+
+    function attachImageFallback(imageEl, fallbackUrl = getImageFallbackUrl()) {
+        imageEl.addEventListener("error", () => {
+            if (imageEl.getAttribute("data-has-fallback") === "true") {
+                return;
+            }
+            imageEl.setAttribute("data-has-fallback", "true");
+            imageEl.src = fallbackUrl;
+            imageEl.alt = `${imageEl.alt || "Card image"} (image unavailable)`;
+        }, { once: false });
+    }
+
     function getVisibleCards() {
         const query = clean(searchInputEl?.value || "").toLowerCase();
         const sortMode = sortSelectEl?.value || "newest";
@@ -315,12 +330,16 @@
             media.className = "card-media";
 
             const image = document.createElement("img");
-            image.src = card.frontImage || card.backImage || "";
+            const primaryImage = card.frontImage || card.backImage || "";
+            image.src = primaryImage || getImageFallbackUrl();
             image.alt = card.title;
             image.loading = "lazy";
+            image.decoding = "async";
+            image.referrerPolicy = "no-referrer";
             if (!card.frontImage && card.backImage) {
-                image.src = card.backImage;
+                image.src = card.backImage || getImageFallbackUrl();
             }
+            attachImageFallback(image);
             image.addEventListener("click", () => openModal(card));
             media.appendChild(image);
 
@@ -395,8 +414,10 @@
 
         modalTitleEl.textContent = card.title;
         modalCaptionEl.textContent = [card.player, card.brand, card.setName, card.cardNumber, card.gradeName, card.gradeNumber].filter(Boolean).join(" • ");
-        modalImageEl.src = state.modalSide === "back" && card.backImage ? card.backImage : card.frontImage || card.backImage || "";
+        const modalImageUrl = state.modalSide === "back" && card.backImage ? card.backImage : card.frontImage || card.backImage || "";
+        modalImageEl.src = modalImageUrl || getImageFallbackUrl();
         modalImageEl.alt = `${card.title} ${state.modalSide}`;
+        attachImageFallback(modalImageEl);
         modalControlsEl.innerHTML = "";
 
         const sideButtons = [];
