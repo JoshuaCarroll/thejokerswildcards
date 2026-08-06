@@ -15,6 +15,13 @@
     const modalCloseBtn = document.getElementById("modal-close");
     const modalControlsEl = document.getElementById("modal-controls");
     const cardCountEl = document.getElementById("card-count");
+    const deeplinkModalEl = document.getElementById("deeplink-modal");
+    const deeplinkModalTitleEl = document.getElementById("deeplink-modal-title");
+    const deeplinkModalCaptionEl = document.getElementById("deeplink-modal-caption");
+    const deeplinkQrEl = document.getElementById("deeplink-qr");
+    const deeplinkInstructionsEl = document.getElementById("deeplink-instructions");
+    const deeplinkDownloadLinkEl = document.getElementById("deeplink-download-link");
+    const deeplinkCloseBtn = document.getElementById("deeplink-modal-close");
 
     const currencyFormatter = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -490,11 +497,61 @@
                 closeModal();
             }
         });
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
-                closeModal();
+        deeplinkCloseBtn?.addEventListener("click", closeDeepLinkFallbackModal);
+        deeplinkModalEl?.addEventListener("click", (event) => {
+            if (event.target === deeplinkModalEl) {
+                closeDeepLinkFallbackModal();
             }
         });
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                if (deeplinkModalEl?.getAttribute("aria-hidden") === "false") {
+                    closeDeepLinkFallbackModal();
+                } else {
+                    closeModal();
+                }
+            }
+        });
+    }
+
+    function closeDeepLinkFallbackModal() {
+        if (!deeplinkModalEl) {
+            return;
+        }
+
+        deeplinkModalEl.setAttribute("aria-hidden", "true");
+        deeplinkQrEl.removeAttribute("src");
+        deeplinkQrEl.alt = "QR code for the CollX deep link";
+        deeplinkDownloadLinkEl.href = "#";
+        deeplinkDownloadLinkEl.textContent = "";
+    }
+
+    function showDeepLinkFallbackModal({ mode, deeplink, downloadUrl, instructions }) {
+        if (!deeplinkModalEl || !deeplinkModalTitleEl || !deeplinkModalCaptionEl || !deeplinkQrEl || !deeplinkInstructionsEl || !deeplinkDownloadLinkEl) {
+            return;
+        }
+
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(deeplink)}`;
+
+        if (mode === "download") {
+            deeplinkModalTitleEl.textContent = "Get CollX";
+            deeplinkModalCaptionEl.textContent = "Open the app store to install CollX and continue from there.";
+            deeplinkInstructionsEl.textContent = instructions || "Download CollX on this device to continue.";
+            deeplinkDownloadLinkEl.href = downloadUrl || "#";
+            deeplinkDownloadLinkEl.textContent = "Download CollX";
+            deeplinkDownloadLinkEl.style.display = "inline-flex";
+        } else {
+            deeplinkModalTitleEl.textContent = "Open CollX on another device";
+            deeplinkModalCaptionEl.textContent = "Scan this QR code from a phone that already has CollX installed.";
+            deeplinkInstructionsEl.textContent = instructions || "You can use this QR code to open the same CollX deep link from another device.";
+            deeplinkDownloadLinkEl.href = "#";
+            deeplinkDownloadLinkEl.textContent = "";
+            deeplinkDownloadLinkEl.style.display = "none";
+        }
+
+        deeplinkQrEl.src = qrCodeUrl;
+        deeplinkQrEl.alt = `QR code for ${deeplink}`;
+        deeplinkModalEl.setAttribute("aria-hidden", "false");
     }
 
     function deeplinkWithFallback(deeplink) {
@@ -505,12 +562,15 @@
         const isChrome = /Chrome|CriOS/i.test(userAgent);
         const isSafari = /Safari/i.test(userAgent) && !/Chrome|CriOS|Edge|Edg/i.test(userAgent);
 
-        if (!isIOS && !isAndroid && !(isMac && (isSafari || isChrome))) {
-            return;
-        }
-
         const appStoreFallback = "https://apps.apple.com/us/app/collx-sports-card-scanner/id1581164444?ls=1";
         const playStoreFallback = "https://play.google.com/store/apps/details?id=app.collx.android";
+        const isMobile = isIOS || isAndroid;
+        const isSupportedPlatform = isMobile || (isMac && (isSafari || isChrome));
+
+        if (!isSupportedPlatform) {
+            showDeepLinkFallbackModal({ mode: "qr", deeplink });
+            return;
+        }
 
         const cleanup = () => {
             window.removeEventListener("blur", handlePageHide);
@@ -528,46 +588,51 @@
         let hasLeft = false;
         let intervalId = null;
 
-        if (isIOS || isMac) {
-            window.addEventListener("blur", handlePageHide);
-            window.addEventListener("pagehide", handlePageHide);
-            window.addEventListener("visibilitychange", handlePageHide);
+        window.addEventListener("blur", handlePageHide);
+        window.addEventListener("pagehide", handlePageHide);
+        window.addEventListener("visibilitychange", handlePageHide);
 
-            if (isMac && isChrome) {
-                const hiddenAnchor = document.createElement("a");
-                hiddenAnchor.href = deeplink;
-                hiddenAnchor.style.display = "none";
-                document.body.appendChild(hiddenAnchor);
-                hiddenAnchor.click();
-                document.body.removeChild(hiddenAnchor);
-            } else {
-                window.location.href = deeplink;
+        if (isMac && isChrome) {
+            const hiddenAnchor = document.createElement("a");
+            hiddenAnchor.href = deeplink;
+            hiddenAnchor.style.display = "none";
+            document.body.appendChild(hiddenAnchor);
+            hiddenAnchor.click();
+            document.body.removeChild(hiddenAnchor);
+        } else {
+            const hiddenIframe = document.createElement("iframe");
+            hiddenIframe.src = deeplink;
+            hiddenIframe.style.display = "none";
+            hiddenIframe.setAttribute("aria-hidden", "true");
+            document.body.appendChild(hiddenIframe);
+            window.setTimeout(() => {
+                hiddenIframe.remove();
+            }, 1000);
+        }
+
+        const start = Date.now();
+        intervalId = window.setInterval(() => {
+            const elapsed = Date.now() - start;
+
+            if (hasLeft || document.hidden) {
+                cleanup();
+                return;
             }
 
-            const start = Date.now();
-            intervalId = window.setInterval(() => {
-                const elapsed = Date.now() - start;
-
-                if (hasLeft || document.hidden) {
-                    cleanup();
-                    return;
+            if (elapsed >= 1800) {
+                cleanup();
+                if (isMobile) {
+                    showDeepLinkFallbackModal({
+                        mode: "download",
+                        deeplink,
+                        downloadUrl: isAndroid ? playStoreFallback : appStoreFallback,
+                        instructions: isAndroid
+                            ? "Install CollX from the Google Play Store to continue."
+                            : "Install CollX from the App Store to continue."
+                    });
                 }
-
-                if (elapsed >= 1800) {
-                    cleanup();
-                    window.location.replace(appStoreFallback);
-                }
-            }, 100);
-
-            return;
-        }
-
-        if (isAndroid) {
-            const encodedFallback = encodeURIComponent(playStoreFallback);
-            const path = deeplink.replace("collx://", "");
-            const intentUrl = `intent://${path}#Intent;scheme=collx;package=app.collx.android;S.browser_fallback_url=${encodedFallback};end`;
-            window.location.replace(intentUrl);
-        }
+            }
+        }, 100);
     }
 
     bindEvents();

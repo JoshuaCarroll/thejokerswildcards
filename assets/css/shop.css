@@ -436,3 +436,67 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.deeplink-modal .modal-dialog {
+    width: min(900px, 100%);
+}
+
+.deeplink-modal-stage {
+    grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+}
+
+.deeplink-qr-shell {
+    min-height: 280px;
+    padding: 18px;
+}
+
+.deeplink-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: var(--text);
+}
+
+.deeplink-instructions {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.deeplink-download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 11px 16px;
+    border-radius: 999px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.deeplink-reasons {
+    padding: 14px 16px;
+    border: 1px solid rgba(127, 47, 0, 0.14);
+    border-radius: 18px;
+    background: rgba(127, 47, 0, 0.05);
+}
+
+.deeplink-reasons h3 {
+    margin: 0 0 8px;
+    color: var(--accent-2);
+}
+
+.deeplink-reasons p {
+    margin: 0 0 6px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+    .deeplink-modal-stage {
+        grid-template-columns: 1fr;
+    }
+}

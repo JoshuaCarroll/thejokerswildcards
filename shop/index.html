@@ -75,6 +75,34 @@
         </div>
     </div>
 
+    <div id="deeplink-modal" class="modal deeplink-modal" aria-hidden="true">
+        <div class="modal-dialog deeplink-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="deeplink-modal-title">
+            <div class="modal-head">
+                <div>
+                    <h2 id="deeplink-modal-title" class="modal-title"></h2>
+                    <p id="deeplink-modal-caption" class="modal-caption"></p>
+                </div>
+                <button id="deeplink-modal-close" class="modal-close" type="button" aria-label="Close deep link help">&times;</button>
+            </div>
+
+            <div class="modal-stage deeplink-modal-stage">
+                <div class="modal-image-shell deeplink-qr-shell">
+                    <img id="deeplink-qr" src="" alt="QR code for the CollX deep link">
+                </div>
+
+                <div class="deeplink-info">
+                    <p id="deeplink-instructions" class="deeplink-instructions"></p>
+                    <a id="deeplink-download-link" class="deeplink-download-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+                    <div class="deeplink-reasons">
+                        <h3>Why I use CollX</h3>
+                        <p>Massive marketplace for sports cards and TCGs.</p>
+                        <p>No trust involved: they hold the buyer’s money until the purchase is delivered.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../assets/scripts/shop-gallery.js"></script>
 </body>
 </html>
