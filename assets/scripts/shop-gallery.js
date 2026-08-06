@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const inventoryPath = "inventory.csv";
+    const inventoryPath = "/shop/inventory.csv";
     const statusEl = document.getElementById("status");
     const galleryEl = document.getElementById("gallery");
     const emptyStateEl = document.getElementById("empty-state");
