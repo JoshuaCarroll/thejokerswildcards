@@ -536,14 +536,14 @@
         if (mode === "download") {
             deeplinkModalTitleEl.textContent = "Get CollX";
             deeplinkModalCaptionEl.textContent = "Open the app store to install CollX and continue from there.";
-            deeplinkInstructionsEl.textContent = instructions || "Download CollX on this device to continue.";
+            deeplinkInstructionsEl.textContent = instructions || "Download CollX to continue.";
             deeplinkDownloadLinkEl.href = downloadUrl || "#";
             deeplinkDownloadLinkEl.textContent = "Download CollX";
             deeplinkDownloadLinkEl.style.display = "inline-flex";
         } else {
             deeplinkModalTitleEl.textContent = "Open CollX on another device";
-            deeplinkModalCaptionEl.textContent = "Scan this QR code from a phone that already has CollX installed.";
-            deeplinkInstructionsEl.textContent = instructions || "You can use this QR code to open the same CollX deep link from another device.";
+            deeplinkModalCaptionEl.textContent = "Scan this QR code from a device that already has CollX installed.";
+            deeplinkInstructionsEl.textContent = instructions || "You can use this QR code to open this listing in CollX.";
             deeplinkDownloadLinkEl.href = "#";
             deeplinkDownloadLinkEl.textContent = "";
             deeplinkDownloadLinkEl.style.display = "none";
