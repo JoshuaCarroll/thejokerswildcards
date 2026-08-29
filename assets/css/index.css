@@ -14,9 +14,15 @@
             
             .page-title {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                width: 100hw;
+                width: 100%;
+                margin-bottom: 6vh;
+            }
+
+            .page-title h1, .page-title h2 {
+                margin-bottom: 0;
             }
 
             h1 {
@@ -24,12 +30,20 @@
                 font-weight: bold;
                 text-shadow: 2px 2px 8px #000000;
                 font-size: clamp(1.8rem, 4vw + 1rem, 4.5rem);
-                margin-bottom: 6vh;
+                
             }
 
             h1 span {
                 font-family: "Fleur De Leah", cursive;
                 font-size: 1.4em;
+            }
+
+            h2 {
+                font-family: "Henny Penny", system-ui;
+                font-weight: bold;
+                text-shadow: 2px 2px 8px #000000;
+                font-size: clamp(1.1rem, 2vw + 1rem, 2.5rem);
+                margin-top: 0.5rem;
             }
 
             .page-content {
